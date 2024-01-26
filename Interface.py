@@ -27,6 +27,7 @@ class Ui_Form(object):
         self.runBtn.setObjectName(u"runBtn")
         self.runBtn.setGeometry(QRect(290, 380, 191, 41))
         self.widget = roundProgressBar(Form)
+        
         self.widget.setObjectName(u"widget")
         self.widget.setGeometry(QRect(39, 69, 181, 181))
 

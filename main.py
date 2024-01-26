@@ -13,6 +13,8 @@ class MainForm(QWidget, Ui_Form):
         self.setupUi(self)
         
         self.setStyleSheet(qdarkstyle.load_stylesheet_pyside2())
+        self.widget.rpb_setBarStyle('Pizza')
+
 
         # Initialize webcam (not activated immediately)
         self.video_capture = None
