@@ -49,8 +49,6 @@ This method focuses on specific facial features, leveraging geometric characteri
 In contrast to the local method, the global approach considers the entire facial image as a holistic entity. It utilizes well-established statistical analysis techniques to capture the overall appearance and expressions. This involves analyzing the distribution of pixel intensities, texture patterns, and other visual cues across the entire face.
 ### Classification Phase
 
-Classification Phase
-
 Once all the features from the facial region have been extracted, the final step in an automatic facial expression analysis system is the classification of these features.
 
 Specifically, this classification involves grouping the extracted features based on their similarities. Various classifiers are employed for this purpose, including artificial neural networks and linear classifiers. These classifiers use the information extracted from the facial expressions to categorize them into specific emotion classes.
@@ -62,7 +60,6 @@ It consists of grayscale images of 48x48 pixels, each categorized into seven emo
 
 The training set includes 28,709 examples, and the public test set includes 3,589 examples.
 
-## Usage
 
 ## Models
 
