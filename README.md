@@ -65,3 +65,40 @@ The training set includes 28,709 examples, and the public test set includes 3,58
 
 Different models, including MobileNetV2, ResNet50, and VGG19, were used for emotion recognition.
 
+## References
+
+* Pushpaja V. Saudagare, D.S. Chaudhari. Facial Expression Recognition using
+Neural Network –An Overview. (IJSCE), Volume-2 Issue-1, March 2012.
+
+* MAJA PANTIC, Facial Expression Recognition, Imperial College London, London, UK.
+https://ibug.doc.ic.ac.uk/media/uploads/documents/EncycBiometrics-Pantic-FacExpRec-P
+ROOF.pdf
+
+* M. Bouhlal, K. Aarika, R. Ait Abdelouahid, S. Elfilali, E. Benlahmar, Emotions
+recognition as innovative tool for improving students’ performance and learning approaches,
+Procedia Computer Science, Volume 175, 2020, Pages 597-602, ISSN 1877-0509,
+https://doi.org/10.1016/j.procs.2020.07.086
+
+* Challenges in Representation Learning: Facial Expression Recognition Challenge,
+https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognit
+ion-challenge/data
+
+* Sun, Ai & Li, Yingjian & Huang, Yueh-Min & Li, Qiong. (2018). The Exploration of Facial
+Expression Recognition in Distance Education Learning System: First International
+Conference, ICITL 2018, Portoroz, Slovenia, August 27–30, 2018, Proceedings.
+10.1007/978-3-319-99737-7_11
+  
+* Haarcascades, Explained. Aditya Mittal , Published in Analytics Vidhya Dec 21, 2020.
+  
+* P. Viola and M. Jones, "Rapid object detection using a boosted cascade of simple
+features," Proceedings of the 2001 IEEE Computer Society Conference on Computer Vision
+and Pattern Recognition. CVPR 2001, Kauai, HI, USA, 2001, pp. I-I, doi:
+10.1109/CVPR.2001.990517
+  
+* Simonyan, K., & Zisserman, A. (2014). Very Deep Convolutional Networks for
+Large-Scale Image Recognition. arXiv:1409.1556 [cs.CV]. https://arxiv.org/abs/1409.1556
+
+* Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen.
+MobileNetV2: Inverted Residuals and Linear Bottlenecks. IEEE Conference on Computer
+Vision and Pattern Recognition (CVPR) , https://doi.org/10.48550/arXiv.1801.04381
+
