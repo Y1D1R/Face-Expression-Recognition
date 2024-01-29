@@ -1,15 +1,18 @@
-# -*- coding: utf-8 -*-
-
 import cv2
 from PySide2.QtCore import Qt, QTimer
 from PySide2.QtWidgets import QApplication, QWidget, QLabel, QPushButton
 from PySide2.QtGui import QPixmap, QImage, QImageReader
-from Interface import *  # Replace 'your_ui_module_name' with the actual name of your UI module
+from Interface import *  
 import qdarkstyle
 from PySide2 import QtCore
 import random 
+import cv2
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+from PySide2.QtGui import QIcon
 
-# GLOBAL
+
 progress_val = 0
 
 class MainForm(QWidget, Ui_Form):
@@ -18,16 +21,20 @@ class MainForm(QWidget, Ui_Form):
         self.setupUi(self)
 
         self.setStyleSheet(qdarkstyle.load_stylesheet_pyside2())
-        self.widget.rpb_setBarStyle('Pizza')
+        #self.widget_0.rpb_setBarStyle('Pizza')
+        for i in range(7):  
+            self.widget_0.rpb_setBarStyle('Pizza')
+            getattr(self, f'widget_{i}').rpb_setBarStyle('Pizza')  # Scale to 0-100
+
 
         # ANIMATE THE PROGRESS
         # LET'S ADD A TIMER TO CHANGE PROGRESS VALUES
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.progress)  # progress function
-        
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.update_prediction)  # Changer pour update_prediction au lieu de progress
+        self.timer.timeout.connect(self.update_video_stream)
 
         # Change all progresses to zero on start
-        QtCore.QTimer.singleShot(0, lambda: self.widget.rpb_setValue(0))
+        QtCore.QTimer.singleShot(0, lambda: self.widget_0.rpb_setValue(0))
 
         # Initialize webcam (not activated immediately)
         self.video_capture = None
@@ -38,21 +45,14 @@ class MainForm(QWidget, Ui_Form):
         self.webcam_timer.start(60)  # Update every 60 milliseconds
 
         self.runBtn.clicked.connect(self.start_webcam)
-
-    def progress(self):
-        global progress_val
-        # Set progress values
-        self.widget.rpb_setValue(progress_val)
-
-        # Reset progresses if the maximum value is reached
-        if progress_val > 420:
-            progress_val = 0
-
-        # Get a new random probability between 0 and 1
-        probability_prob = random.uniform(0, 1)
-        progress_val = int(probability_prob * 420)
-        #progress_val += 1
-        
+        self.model = tf.keras.models.load_model('C:/Users/21379/Desktop/Master VMI 2024/Interaction Homme Machine/ProjetIhm/ResNet-50.h5')
+        self.emotions = ['Angry', 'Disgusted', 'Fearful', 'Happy', 'Sad', 'Surprised', 'Neutral']
+        self.cascPath = 'C:/Users/21379/Desktop/Master VMI 2024/Interaction Homme Machine/IHM Project/haarcascade_frontalface_default.xml'
+        self.face_cascade = cv2.CascadeClassifier(self.cascPath)
+        if self.face_cascade.empty():
+            print("Erreur : Impossible de charger le classificateur de visages !")
+        else:
+            print("Le classificateur de visages a été chargé avec succès !")    
 
     def start_webcam(self):
         if self.video_capture is None:
@@ -61,7 +61,63 @@ class MainForm(QWidget, Ui_Form):
             print("Webcam activated!")
 
             # Start the timer for progress bar animation when webcam is activated
-            self.timer.start(200)
+            self.timer.start(30)
+    def reset_all_progress(self):
+        for i in range(7):
+            getattr(self, f'widget_{i}').rpb_setValue(0)
+    def update_prediction(self):
+        if self.video_capture is not None:
+            ret, frame = self.video_capture.read()  # Continuously capture frames
+            if not ret:
+                print("Error reading frame")
+                return
+
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = self.face_cascade.detectMultiScale(
+                gray_frame,
+                scaleFactor=1.1,
+                minNeighbors=4,
+                minSize=(30, 30)
+            )
+            if(len(faces)<= 0 ):
+                print('No Face Detected !')
+                self.reset_all_progress()
+            else:
+                for (x, y, w, h) in faces:
+                    ROI_gray = gray_frame[y:y + h, x:x + w]
+                    emotion = self.preprocess_input(ROI_gray)
+                    prediction = self.model.predict(emotion)
+                    #print(prediction)
+
+                    # Update each progress bar with the respective emotion probability
+                    for i in range(7):  # Assuming you have 7 emotions
+                        probability_prob = prediction[0][i]
+                        getattr(self, f'widget_{i}').rpb_setValue(int(probability_prob * 100))  # Scale to 0-100
+                        progress_value = int(probability_prob * 100)
+                        # Change progress bar color to green if value exceeds 50%
+                        if progress_value > 50:
+                            getattr(self, f'widget_{i}').rpb_setLineColor((255, 0, 0))
+                        else: 
+                            getattr(self, f'widget_{i}').rpb_setLineColor((0, 255, 0))
+
+                    
+
+    def preprocess_input(self, image):
+        img_width = 197
+        img_height = 197
+        image = cv2.resize(image, (img_width, img_height))  # redimensionner les images
+        ret = np.empty((img_height, img_width, 3))  # creer un tableau vide
+        ret[:, :, 0] = image
+        ret[:, :, 1] = image
+        ret[:, :, 2] = image
+
+        x = np.expand_dims(ret, axis=0)  # (1, XXX, XXX, 3)
+        mean = np.mean(x)
+        std = np.std(x)
+        x -= mean
+        x /= std
+
+        return x
 
     def update_video_stream(self):
         if self.video_capture is not None:
@@ -92,5 +148,7 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     mainWindow = MainForm()
+    mainWindow.setWindowTitle("Facial Expression Recognition")
+    mainWindow.setWindowIcon(QIcon('icon.png'))
     mainWindow.show()
     sys.exit(app.exec_())
