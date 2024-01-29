@@ -88,7 +88,7 @@ Expression Recognition in Distance Education Learning System: First Internationa
 Conference, ICITL 2018, Portoroz, Slovenia, August 27–30, 2018, Proceedings.
 10.1007/978-3-319-99737-7_11
   
-* Haarcascades, Explained. Aditya Mittal , Published in Analytics Vidhya Dec 21, 2020.
+* Haarcascades, Explained. Aditya Mittal , Published in Analytics Vidhya Dec 21, 2020. https://medium.com/analytics-vidhya/haar-cascades-explained-38210e57970d
   
 * P. Viola and M. Jones, "Rapid object detection using a boosted cascade of simple
 features," Proceedings of the 2001 IEEE Computer Society Conference on Computer Vision
