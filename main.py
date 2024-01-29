@@ -28,9 +28,9 @@ class MainForm(QWidget, Ui_Form):
 
 
         # ANIMATE THE PROGRESS
-        # LET'S ADD A TIMER TO CHANGE PROGRESS VALUES
+        # ADD A TIMER TO CHANGE PROGRESS VALUES
         self.timer = QtCore.QTimer(self)
-        self.timer.timeout.connect(self.update_prediction)  # Changer pour update_prediction au lieu de progress
+        self.timer.timeout.connect(self.update_prediction)  
         self.timer.timeout.connect(self.update_video_stream)
 
         # Change all progresses to zero on start
@@ -42,7 +42,7 @@ class MainForm(QWidget, Ui_Form):
         # Set up a timer to update the video stream
         self.webcam_timer = QTimer(self)
         self.webcam_timer.timeout.connect(self.update_video_stream)
-        self.webcam_timer.start(60)  # Update every 60 milliseconds
+        self.webcam_timer.start(60)  
 
         self.runBtn.clicked.connect(self.start_webcam)
         self.model = tf.keras.models.load_model('C:/Users/21379/Desktop/Master VMI 2024/Interaction Homme Machine/ProjetIhm/ResNet-50.h5')
@@ -57,7 +57,7 @@ class MainForm(QWidget, Ui_Form):
     def start_webcam(self):
         if self.video_capture is None:
             # Initialize webcam when the "Run" button is pressed
-            self.video_capture = cv2.VideoCapture(0)  # Use the default camera (index 0)
+            self.video_capture = cv2.VideoCapture(0)  
             print("Webcam activated!")
 
             # Start the timer for progress bar animation when webcam is activated
@@ -67,7 +67,7 @@ class MainForm(QWidget, Ui_Form):
             getattr(self, f'widget_{i}').rpb_setValue(0)
     def update_prediction(self):
         if self.video_capture is not None:
-            ret, frame = self.video_capture.read()  # Continuously capture frames
+            ret, frame = self.video_capture.read()  
             if not ret:
                 print("Error reading frame")
                 return
@@ -90,7 +90,7 @@ class MainForm(QWidget, Ui_Form):
                     #print(prediction)
 
                     # Update each progress bar with the respective emotion probability
-                    for i in range(7):  # Assuming you have 7 emotions
+                    for i in range(7):  # Assuming that we have 7 emotions (Because we are using FER2013 DataSet)
                         probability_prob = prediction[0][i]
                         getattr(self, f'widget_{i}').rpb_setValue(int(probability_prob * 100))  # Scale to 0-100
                         progress_value = int(probability_prob * 100)
@@ -105,13 +105,13 @@ class MainForm(QWidget, Ui_Form):
     def preprocess_input(self, image):
         img_width = 197
         img_height = 197
-        image = cv2.resize(image, (img_width, img_height))  # redimensionner les images
-        ret = np.empty((img_height, img_width, 3))  # creer un tableau vide
+        image = cv2.resize(image, (img_width, img_height))  
+        ret = np.empty((img_height, img_width, 3))  
         ret[:, :, 0] = image
         ret[:, :, 1] = image
         ret[:, :, 2] = image
 
-        x = np.expand_dims(ret, axis=0)  # (1, XXX, XXX, 3)
+        x = np.expand_dims(ret, axis=0)  
         mean = np.mean(x)
         std = np.std(x)
         x -= mean
@@ -121,7 +121,7 @@ class MainForm(QWidget, Ui_Form):
 
     def update_video_stream(self):
         if self.video_capture is not None:
-            # Read a frame from the webcam
+            
             ret, frame = self.video_capture.read()
 
             if ret:
@@ -133,7 +133,7 @@ class MainForm(QWidget, Ui_Form):
                 bytes_per_line = 3 * width
                 q_image = QImage(rgb_frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
 
-                # Convert QImage to QPixmap and set it as the label's pixmap
+                
                 pixmap = QPixmap.fromImage(q_image)
                 self.videoLabel.setPixmap(pixmap)
 
