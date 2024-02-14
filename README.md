@@ -4,6 +4,10 @@ This repository contains a Python application for emotion recognition using faci
 
 The application utilizes computer vision techniques and deep learning models to analyze facial expressions , aiming to detect and classify emotions based on input images or video streams. The graphical user interface (GUI) is developed using PySide2.
 
+<p align="center">
+  <img src="exmpl.jpg" width='400' />
+</p>
+
 ## Introduction
 
 Human communication involves two main aspects: verbal (auditory) and non-verbal (visual). In the realm of non-verbal communication, facial expressions play a crucial role. 
