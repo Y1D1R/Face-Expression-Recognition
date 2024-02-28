@@ -1,4 +1,5 @@
 # Face-Expression-Recognition
+**If you find the repository informative and believe it could assist you in your projects, consider giving it a star ⭐️**
 ## Overview
 This repository contains a Python application for emotion recognition using facial expressions.
 
